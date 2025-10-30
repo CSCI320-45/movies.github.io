@@ -9,12 +9,12 @@ paths:
   /movies:
     post:
       summary: "POST movies"
-      operationId: "searchMovies"
+      operationId: "createMovie"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MovieSearchRequest"
+              $ref: "#/components/schemas/Movie"
         required: true
       responses:
         "200":
@@ -22,9 +22,7 @@ paths:
           content:
             '*/*':
               schema:
-                type: "array"
-                items:
-                  $ref: "#/components/schemas/MovieSearchResponse"
+                $ref: "#/components/schemas/Movie"
   /movies/rate:
     post:
       summary: "POST movies/rate"
@@ -59,6 +57,25 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Movie"
+  /movies/search:
+    post:
+      summary: "POST movies/search"
+      operationId: "searchMovies"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovieSearchRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/MovieSearchResponse"
   /movies/{id}:
     get:
       summary: "GET movies/{id}"
