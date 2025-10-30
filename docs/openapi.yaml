@@ -2,98 +2,10 @@ openapi: "3.1.0"
 info:
   title: "backend API"
   description: "backend API"
-  version: "1.0.0"
+  version: "1.3.0"
 servers:
   - url: "https://backend"
 paths:
-  /movies:
-    post:
-      summary: "POST movies"
-      operationId: "createMovie"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Movie"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Movie"
-  /movies/rate:
-    post:
-      summary: "POST movies/rate"
-      operationId: "rateMovie"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RateEvent"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Movie"
-  /movies/watch:
-    post:
-      summary: "POST movies/watch"
-      operationId: "watchMovie"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/WatchEvent"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Movie"
-  /movies/search:
-    post:
-      summary: "POST movies/search"
-      operationId: "searchMovies"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/MovieSearchRequest"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                type: "array"
-                items:
-                  $ref: "#/components/schemas/MovieSearchResponse"
-  /movies/{id}:
-    get:
-      summary: "GET movies/{id}"
-      operationId: "getMovieById"
-      parameters:
-        - name: "id"
-          in: "path"
-          required: true
-          schema:
-            type: "integer"
-            format: "int32"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Movie"
   /users:
     post:
       summary: "POST users"
@@ -279,8 +191,401 @@ paths:
                 type: "array"
                 items:
                   $ref: "#/components/schemas/WatchEvent"
+  /users/{id}/collections:
+    get:
+      summary: "GET users/{id}/collections"
+      operationId: "getCollectionInfos"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CollectionInfo"
+  /movies:
+    post:
+      summary: "POST movies"
+      operationId: "createMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movie"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Movie"
+  /movies/rate:
+    post:
+      summary: "POST movies/rate"
+      operationId: "rateMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RateEvent"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Movie"
+  /movies/watch:
+    post:
+      summary: "POST movies/watch"
+      operationId: "watchMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WatchEvent"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Movie"
+  /movies/search:
+    post:
+      summary: "POST movies/search"
+      operationId: "searchMovies"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovieSearchRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/MovieSearchResponse"
+  /movies/{id}:
+    get:
+      summary: "GET movies/{id}"
+      operationId: "getMovieById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Movie"
+  /collections:
+    post:
+      summary: "POST collections"
+      operationId: "createCollection"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CollectionCreation"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Collection"
+  /collections/{id}/delete:
+    post:
+      summary: "POST collections/{id}/delete"
+      operationId: "deleteCollection"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+  /collections/movie/add:
+    post:
+      summary: "POST collections/movie/add"
+      operationId: "addMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddMovieEvent"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Collection"
+  /collections/movie/remove:
+    post:
+      summary: "POST collections/movie/remove"
+      operationId: "removeMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddMovieEvent"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Collection"
+  /collections/{id}/watch:
+    post:
+      summary: "POST collections/{id}/watch"
+      operationId: "watchCollection"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Collection"
+  /collections/update:
+    post:
+      summary: "POST collections/update"
+      operationId: "updateCollectionName"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NameUpdateEvent"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Collection"
+  /collections/{id}:
+    get:
+      summary: "GET collections/{id}"
+      operationId: "getCollectionById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Collection"
+  /collections/creation:
+    get:
+      summary: "GET collections/creation"
+      operationId: "getCollectionByCreation"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CollectionCreation"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Collection"
 components:
   schemas:
+    UserCreation:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          nullable: true
+        password:
+          type: "string"
+          nullable: true
+        email:
+          type: "string"
+          nullable: true
+        firstName:
+          type: "string"
+          nullable: true
+        lastName:
+          type: "string"
+          nullable: true
+    Timestamp:
+      type: "object"
+      properties:
+        nanos:
+          type: "integer"
+          format: "int32"
+          nullable: true
+    UserResponse:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        username:
+          type: "string"
+          nullable: true
+        email:
+          type: "string"
+          nullable: true
+        firstName:
+          type: "string"
+          nullable: true
+        lastName:
+          type: "string"
+          nullable: true
+        creationDate:
+          nullable: true
+          $ref: "#/components/schemas/Timestamp"
+        lastAccessDate:
+          nullable: true
+          $ref: "#/components/schemas/Timestamp"
+    LoginRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          nullable: true
+        password:
+          type: "string"
+          nullable: true
+    FollowRequest:
+      type: "object"
+      properties:
+        userId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        followedId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+    FollowResponse:
+      type: "object"
+      properties:
+        user:
+          nullable: true
+          $ref: "#/components/schemas/UserResponse"
+        followed:
+          nullable: true
+          $ref: "#/components/schemas/UserResponse"
+    SearchResponse:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          nullable: true
+        email:
+          type: "string"
+          nullable: true
+        firstName:
+          type: "string"
+          nullable: true
+        lastName:
+          type: "string"
+          nullable: true
+    RateEvent:
+      type: "object"
+      properties:
+        userId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        movieId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        rating:
+          type: "integer"
+          format: "int32"
+          nullable: true
+    WatchEvent:
+      type: "object"
+      properties:
+        userId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        movieId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        timestamp:
+          nullable: true
+          $ref: "#/components/schemas/Timestamp"
+    CollectionInfo:
+      type: "object"
+      properties:
+        collectionId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        name:
+          type: "string"
+          nullable: true
+        numMovies:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        runtimeHours:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        runtimeMinutes:
+          type: "integer"
+          format: "int32"
+          nullable: true
     Movie:
       type: "object"
       properties:
@@ -306,42 +611,6 @@ components:
             - "NC17"
             - "NR"
             - "UR"
-    RateEvent:
-      type: "object"
-      properties:
-        userId:
-          type: "integer"
-          format: "int32"
-          nullable: true
-        movieId:
-          type: "integer"
-          format: "int32"
-          nullable: true
-        rating:
-          type: "integer"
-          format: "int32"
-          nullable: true
-    Timestamp:
-      type: "object"
-      properties:
-        nanos:
-          type: "integer"
-          format: "int32"
-          nullable: true
-    WatchEvent:
-      type: "object"
-      properties:
-        userId:
-          type: "integer"
-          format: "int32"
-          nullable: true
-        movieId:
-          type: "integer"
-          format: "int32"
-          nullable: true
-        timestamp:
-          nullable: true
-          $ref: "#/components/schemas/Timestamp"
     DateSearch:
       type: "object"
       properties:
@@ -432,90 +701,51 @@ components:
             - "NC17"
             - "NR"
             - "UR"
-    UserCreation:
-      type: "object"
-      properties:
-        username:
-          type: "string"
-          nullable: true
-        password:
-          type: "string"
-          nullable: true
-        email:
-          type: "string"
-          nullable: true
-        firstName:
-          type: "string"
-          nullable: true
-        lastName:
-          type: "string"
-          nullable: true
-    UserResponse:
-      type: "object"
-      properties:
-        id:
-          type: "integer"
-          format: "int32"
-          nullable: true
-        username:
-          type: "string"
-          nullable: true
-        email:
-          type: "string"
-          nullable: true
-        firstName:
-          type: "string"
-          nullable: true
-        lastName:
-          type: "string"
-          nullable: true
-        creationDate:
-          nullable: true
-          $ref: "#/components/schemas/Timestamp"
-        lastAccessDate:
-          nullable: true
-          $ref: "#/components/schemas/Timestamp"
-    LoginRequest:
-      type: "object"
-      properties:
-        username:
-          type: "string"
-          nullable: true
-        password:
-          type: "string"
-          nullable: true
-    FollowRequest:
+    CollectionCreation:
       type: "object"
       properties:
         userId:
           type: "integer"
           format: "int32"
           nullable: true
-        followedId:
+        name:
+          type: "string"
+          nullable: true
+    Collection:
+      type: "object"
+      properties:
+        id:
           type: "integer"
           format: "int32"
           nullable: true
-    FollowResponse:
+        creationDate:
+          nullable: true
+          $ref: "#/components/schemas/Timestamp"
+        userId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        name:
+          type: "string"
+          nullable: true
+    AddMovieEvent:
       type: "object"
       properties:
-        user:
+        collectionId:
+          type: "integer"
+          format: "int32"
           nullable: true
-          $ref: "#/components/schemas/UserResponse"
-        followed:
+        movieId:
+          type: "integer"
+          format: "int32"
           nullable: true
-          $ref: "#/components/schemas/UserResponse"
-    SearchResponse:
+    NameUpdateEvent:
       type: "object"
       properties:
-        username:
-          type: "string"
+        collectionId:
+          type: "integer"
+          format: "int32"
           nullable: true
-        email:
-          type: "string"
-          nullable: true
-        firstName:
-          type: "string"
-          nullable: true
-        lastName:
+        name:
           type: "string"
           nullable: true
