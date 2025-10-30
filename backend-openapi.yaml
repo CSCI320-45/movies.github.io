@@ -1,0 +1,521 @@
+openapi: "3.1.0"
+info:
+  title: "backend API"
+  description: "backend API"
+  version: "1.0.0"
+servers:
+  - url: "https://backend"
+paths:
+  /movies:
+    post:
+      summary: "POST movies"
+      operationId: "createMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Movie"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Movie"
+  /movies/rate:
+    post:
+      summary: "POST movies/rate"
+      operationId: "rateMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RateEvent"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Movie"
+  /movies/watch:
+    post:
+      summary: "POST movies/watch"
+      operationId: "watchMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WatchEvent"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Movie"
+  /movies/:
+    post:
+      summary: "POST movies/"
+      operationId: "searchMovies"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MovieSearchRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/MovieSearchResponse"
+  /movies/{id}:
+    get:
+      summary: "GET movies/{id}"
+      operationId: "getMovieById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Movie"
+  /users:
+    post:
+      summary: "POST users"
+      operationId: "createUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreation"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+  /users/login:
+    post:
+      summary: "POST users/login"
+      operationId: "login"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+  /users/follow:
+    post:
+      summary: "POST users/follow"
+      operationId: "follow"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FollowRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FollowResponse"
+  /users/unfollow:
+    post:
+      summary: "POST users/unfollow"
+      operationId: "unfollow"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FollowRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/FollowResponse"
+  /users/{id}:
+    get:
+      summary: "GET users/{id}"
+      operationId: "getUserById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+  /users/:
+    get:
+      summary: "GET users/"
+      operationId: "searchUsersByEmail"
+      parameters:
+        - name: "email"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/SearchResponse"
+  /users/{id}/followers:
+    get:
+      summary: "GET users/{id}/followers"
+      operationId: "getFollowers"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  type: "string"
+  /users/{id}/following:
+    get:
+      summary: "GET users/{id}/following"
+      operationId: "getFollowed"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  type: "string"
+  /users/{id}/ratings:
+    get:
+      summary: "GET users/{id}/ratings"
+      operationId: "getRatings"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/RateEvent"
+  /users/{id}/history:
+    get:
+      summary: "GET users/{id}/history"
+      operationId: "getHistory"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/WatchEvent"
+components:
+  schemas:
+    Movie:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        title:
+          type: "string"
+          nullable: true
+        runtime:
+          type: "number"
+          format: "float"
+          nullable: true
+        mpaaRating:
+          type: "string"
+          nullable: true
+          enum:
+            - "G"
+            - "PG"
+            - "PG13"
+            - "R"
+            - "NC17"
+            - "NR"
+            - "UR"
+    RateEvent:
+      type: "object"
+      properties:
+        userId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        movieId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        rating:
+          type: "integer"
+          format: "int32"
+          nullable: true
+    Timestamp:
+      type: "object"
+      properties:
+        nanos:
+          type: "integer"
+          format: "int32"
+          nullable: true
+    WatchEvent:
+      type: "object"
+      properties:
+        userId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        movieId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        timestamp:
+          nullable: true
+          $ref: "#/components/schemas/Timestamp"
+    DateSearch:
+      type: "object"
+      properties:
+        year:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        month:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        day:
+          type: "integer"
+          format: "int32"
+          nullable: true
+    MovieSearchRequest:
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          nullable: true
+          enum:
+            - "TITLE"
+            - "DATE"
+            - "PLATFORM"
+            - "GENRE"
+            - "CONTRIBUTOR"
+        dir:
+          type: "string"
+          nullable: true
+          enum:
+            - "ASC"
+            - "DESC"
+        key:
+          type: "string"
+          nullable: true
+          enum:
+            - "TITLE"
+            - "PLATFORM"
+            - "GENRE"
+            - "YEAR"
+            - "OTHER"
+        title:
+          type: "string"
+          nullable: true
+        platform:
+          type: "string"
+          nullable: true
+        genre:
+          type: "string"
+          nullable: true
+        contributor:
+          type: "string"
+          nullable: true
+        date:
+          nullable: true
+          $ref: "#/components/schemas/DateSearch"
+    MovieSearchResponse:
+      type: "object"
+      properties:
+        title:
+          type: "string"
+          nullable: true
+        actors:
+          type: "array"
+          nullable: true
+          items:
+            type: "string"
+        director:
+          type: "string"
+          nullable: true
+        minutes:
+          type: "number"
+          format: "float"
+          nullable: true
+        rating:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        MPAA_rating:
+          type: "string"
+          nullable: true
+          enum:
+            - "G"
+            - "PG"
+            - "PG13"
+            - "R"
+            - "NC17"
+            - "NR"
+            - "UR"
+    UserCreation:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          nullable: true
+        password:
+          type: "string"
+          nullable: true
+        email:
+          type: "string"
+          nullable: true
+        firstName:
+          type: "string"
+          nullable: true
+        lastName:
+          type: "string"
+          nullable: true
+    UserResponse:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        username:
+          type: "string"
+          nullable: true
+        email:
+          type: "string"
+          nullable: true
+        firstName:
+          type: "string"
+          nullable: true
+        lastName:
+          type: "string"
+          nullable: true
+        creationDate:
+          nullable: true
+          $ref: "#/components/schemas/Timestamp"
+        lastAccessDate:
+          nullable: true
+          $ref: "#/components/schemas/Timestamp"
+    LoginRequest:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          nullable: true
+        password:
+          type: "string"
+          nullable: true
+    FollowRequest:
+      type: "object"
+      properties:
+        userId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        followedId:
+          type: "integer"
+          format: "int32"
+          nullable: true
+    FollowResponse:
+      type: "object"
+      properties:
+        user:
+          nullable: true
+          $ref: "#/components/schemas/UserResponse"
+        followed:
+          nullable: true
+          $ref: "#/components/schemas/UserResponse"
+    SearchResponse:
+      type: "object"
+      properties:
+        username:
+          type: "string"
+          nullable: true
+        email:
+          type: "string"
+          nullable: true
+        firstName:
+          type: "string"
+          nullable: true
+        lastName:
+          type: "string"
+          nullable: true
